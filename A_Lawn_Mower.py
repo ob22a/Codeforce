@@ -1,11 +1,7 @@
 def solve():
     n,w=map(int,input().split())
-    i=0
-    sol=0
-    while i<n:
-        sol+=min(w-1,n-i)
-        i+=w
-    print(sol)
+    groups = n//w
+    print(n-groups)
 
 t = int(input())
 for _ in range(t):
