@@ -1,73 +1,34 @@
 def solve():
-    s = input()    
-    num_low_upper = [0]*3
-    for c in s:
-        if c.isdecimal():
-            num_low_upper[0]+=1
-        elif c.islower():
-            num_low_upper[1]+=1
-        else: num_low_upper[2]+=1
+    s = list(input())
     
-    if(all(x!=0 for x in num_low_upper)):
-        print(s)
-        return 
+    digits = [i for i,c in enumerate(s) if c.isdigit()]
+    lower  = [i for i,c in enumerate(s) if c.islower()]
+    upper  = [i for i,c in enumerate(s) if c.isupper()]
     
-    a=list(s)
-    n=len(a)
-    hasZero = []
+    if digits and lower and upper:
+        print("".join(s))
+        return
 
-    for i in range(3):
-        if num_low_upper[i]==0:
-            hasZero.append(i)
-    
-    while not all(x!=0 for x in num_low_upper):
-        largest = 0
-        if num_low_upper[1]>num_low_upper[0]:
-            if num_low_upper[2]>num_low_upper[1]:
-                largest=2
-            else:
-                largest=1
-        elif num_low_upper[2]>num_low_upper[0]:
-            largest=2
+    if not digits:
+        if len(lower) > 1:
+            s[lower.pop()] = '1'
+        else:
+            s[upper.pop()] = '1'
 
-        for i in range(n):
-            if num_low_upper[largest]==1 or not hasZero:
-                break
+    if not lower:
+        if len(digits) > 1:
+            s[digits.pop()] = 'o'
+        else:
+            s[upper.pop()] = 'o'
 
-            match largest:
-                case 0:
-                    if(a[i].isdigit()):
-                        if hasZero[-1]==1: 
-                            a[i]='o'
-                            num_low_upper[1]+=1
-                        elif hasZero[-1]==2:
-                            a[i]='O'
-                            num_low_upper[2]+=1
-                        hasZero.pop()
-                        num_low_upper[largest]-=1
-                case 1:
-                    if(a[i].islower()):
-                        if hasZero[-1]==0:
-                            a[i]='1'
-                            num_low_upper[0]+=1
-                        elif hasZero[-1]==2:
-                            a[i]='O'
-                            num_low_upper[2]+=1
-                        hasZero.pop()
-                        num_low_upper[largest]-=1
-                case 2:
-                    if(a[i].isupper()):
-                        if hasZero[-1]==0:
-                            a[i]='1'
-                            num_low_upper[0]+=1
-                        elif hasZero[-1]==1:
-                            a[i]='o'
-                            num_low_upper[1]+=1
-                        hasZero.pop()
-                        num_low_upper[largest]-=1
-    
-    print("".join(a))
-                
+    if not upper:
+        if len(digits) > 1:
+            s[digits.pop()] = 'O'
+        else:
+            s[lower.pop()] = 'O'
+
+    print("".join(s))
+
 
 t = int(input())
 for _ in range(t):
