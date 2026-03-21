@@ -1,0 +1,6 @@
+n, a, b = map(int, input().split())
+
+for x in range((a + b) // n, 0, -1):
+    if (a // x) + (b // x) >= n:
+        print(x)
+        break
